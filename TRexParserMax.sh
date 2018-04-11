@@ -79,7 +79,7 @@ do
 			MaxCPS=`printf '%s\n'  ${TotalCpsArray[@]} | grep cps| sort -n| tail -1`
 		fi
 		
-		echo ",,$test_name,$MaxRX,$MaxTX,$MaxPPS,$MaxCPS" >> $csv_file
+		echo ",$test_name,$MaxRX,$MaxTX,$MaxPPS,$MaxCPS" >> $csv_file
 
 	else
 		echo "Skipping $log_filename .."
