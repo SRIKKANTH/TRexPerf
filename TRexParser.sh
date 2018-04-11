@@ -21,6 +21,10 @@ do
 	fi
 	if [ "x${MaxTX}" == "x" ]
 	then
+		MaxTX=`printf '%s\n'  ${TotalTxArray[@]} | grep Kbps| sort -n| tail -1`
+	fi
+	if [ "x${MaxTX}" == "x" ]
+	then
 		MaxTX=`printf '%s\n'  ${TotalTxArray[@]} | grep bps| sort -n| tail -1`
 	fi
 	
@@ -31,6 +35,10 @@ do
 		if [ "x${MaxRX}" == "x" ]
 		then
 			MaxRX=`printf '%s\n'  ${TotalRxArray[@]} | grep Mbps | sort -n| tail -1`
+		fi
+		if [ "x${MaxRX}" == "x" ]
+		then
+			MaxRX=`printf '%s\n'  ${TotalRxArray[@]} | grep Kbps| sort -n| tail -1`
 		fi
 		if [ "x${MaxRX}" == "x" ]
 		then
@@ -47,6 +55,10 @@ do
 		fi
 		if [ "x${MaxPPS}" == "x" ]
 		then
+			MaxPPS=`printf '%s\n'  ${TotalPpsArray[@]} | grep Kpps| sort -n| tail -1`
+		fi
+		if [ "x${MaxPPS}" == "x" ]
+		then
 			MaxPPS=`printf '%s\n'  ${TotalPpsArray[@]} | grep pps| sort -n| tail -1`
 		fi
 		
@@ -55,6 +67,10 @@ do
 		if [ "x${MaxCPS}" == "x" ]
 		then
 			MaxCPS=`printf '%s\n'  ${TotalCpsArray[@]} | grep Mcps|  sort -n| tail -1`
+		fi
+		if [ "x${MaxCPS}" == "x" ]
+		then
+			MaxCPS=`printf '%s\n'  ${TotalCpsArray[@]} | grep Kcps| sort -n| tail -1`
 		fi
 		if [ "x${MaxCPS}" == "x" ]
 		then

@@ -24,9 +24,12 @@ do
 	fi
 	if [ "x${MaxTX}" == "x" ]
 	then
-		MaxTX=`printf '%s\n'  ${TotalTxArray[@]} | grep bps| sort -n| tail -1`
+		MaxTX=`printf '%s\n'  ${TotalTxArray[@]} | grep Kbps| sort -n| tail -1`
 	fi
-	
+	if [ "x${MaxTX}" == "x" ]
+	then
+		MaxTX=`printf '%s\n'  ${TotalTxArray[@]} | grep bps| sort -n| tail -1`
+	fi	
 	if [ "x${TotalTxArray[0]}" != "x" ]
 	then
 		TotalRxArray=(`cat $log_filename | grep Total-Rx | awk '{print $3 $4}'`)
@@ -34,6 +37,10 @@ do
 		if [ "x${MaxRX}" == "x" ]
 		then
 			MaxRX=`printf '%s\n'  ${TotalRxArray[@]} | grep Mbps | sort -n| tail -1`
+		fi
+		if [ "x${MaxRX}" == "x" ]
+		then
+			MaxRX=`printf '%s\n'  ${TotalRxArray[@]} | grep Kbps| sort -n| tail -1`
 		fi
 		if [ "x${MaxRX}" == "x" ]
 		then
@@ -50,6 +57,10 @@ do
 		fi
 		if [ "x${MaxPPS}" == "x" ]
 		then
+			MaxPPS=`printf '%s\n'  ${TotalPpsArray[@]} | grep Kpps| sort -n| tail -1`
+		fi
+		if [ "x${MaxPPS}" == "x" ]
+		then
 			MaxPPS=`printf '%s\n'  ${TotalPpsArray[@]} | grep pps| sort -n| tail -1`
 		fi
 		
@@ -61,10 +72,14 @@ do
 		fi
 		if [ "x${MaxCPS}" == "x" ]
 		then
+			MaxCPS=`printf '%s\n'  ${TotalCpsArray[@]} | grep Kcps| sort -n| tail -1`
+		fi
+		if [ "x${MaxCPS}" == "x" ]
+		then
 			MaxCPS=`printf '%s\n'  ${TotalCpsArray[@]} | grep cps| sort -n| tail -1`
 		fi
 		
-		echo ",,$test_name,$MaxRX,$MaxTX,$MaxPPS$MaxCPS" >> $csv_file
+		echo ",,$test_name,$MaxRX,$MaxTX,$MaxPPS,$MaxCPS" >> $csv_file
 
 	else
 		echo "Skipping $log_filename .."
