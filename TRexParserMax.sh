@@ -5,7 +5,7 @@ mkdir $csv_folder
 csv_file=$csv_folder/Max.csv
 echo "" >> $csv_file
 echo "" >> $csv_file
-echo ",LogFileName,MaxRxThroughput,MaxTxThroughput,MaxPacketsPerSec,MaxConnectionsPerSec" > $csv_file
+echo ",MaxRxThroughput,MaxTxThroughput,MaxPacketsPerSec,MaxConnectionsPerSec,TestName" > $csv_file
 
 i=0
 
@@ -14,10 +14,10 @@ do
 	log_filename=${log_files_list[$i]}
 	test_name=`echo $log_filename | sed "s/\.yaml\.log//"`
 	echo "Parsing $log_filename..."
-	
+
 	TotalTxArray=(`cat $log_filename | grep Total-Tx | awk '{print $3 $4}'`)
 	MaxTX=`printf '%s\n'  ${TotalTxArray[@]} | grep Gbps| sort -n| tail -1`
-	
+
 	if [ "x${MaxTX}" == "x" ]
 	then
 		MaxTX=`printf '%s\n'  ${TotalTxArray[@]} | grep Mbps| sort -n| tail -1`
@@ -29,7 +29,7 @@ do
 	if [ "x${MaxTX}" == "x" ]
 	then
 		MaxTX=`printf '%s\n'  ${TotalTxArray[@]} | grep bps| sort -n| tail -1`
-	fi	
+	fi
 	if [ "x${TotalTxArray[0]}" != "x" ]
 	then
 		TotalRxArray=(`cat $log_filename | grep Total-Rx | awk '{print $3 $4}'`)
@@ -47,10 +47,10 @@ do
 			MaxRX=`printf '%s\n'  ${TotalRxArray[@]} | grep bps| sort -n| tail -1`
 		fi
 		DropRateArray=(`cat $log_filename | grep drop-rate | awk '{print $3 $4}'`)
-		
+
 		TotalPpsArray=(`cat $log_filename | grep Total-PPS | awk '{print $3 $4}'`)
 		MaxPPS=`printf '%s\n'  ${TotalPpsArray[@]} | grep Gpps|  sort -n| tail -1`
-		
+
 		if [ "x${MaxPPS}" == "x" ]
 		then
 			MaxPPS=`printf '%s\n'  ${TotalPpsArray[@]} | grep Mpps|  sort -n| tail -1`
@@ -63,7 +63,7 @@ do
 		then
 			MaxPPS=`printf '%s\n'  ${TotalPpsArray[@]} | grep pps| sort -n| tail -1`
 		fi
-		
+
 		TotalCpsArray=(`cat $log_filename | grep Total-CPS | awk '{print $3 $4}'`)
 		MaxCPS=`printf '%s\n'  ${TotalCpsArray[@]} | grep Gcps|  sort -n| tail -1`
 		if [ "x${MaxCPS}" == "x" ]
@@ -78,8 +78,8 @@ do
 		then
 			MaxCPS=`printf '%s\n'  ${TotalCpsArray[@]} | grep cps| sort -n| tail -1`
 		fi
-		
-		echo ",$test_name,$MaxRX,$MaxTX,$MaxPPS,$MaxCPS" >> $csv_file
+
+		echo ",$MaxRX,$MaxTX,$MaxPPS,$MaxCPS,$test_name" >> $csv_file
 
 	else
 		echo "Skipping $log_filename .."
@@ -87,4 +87,4 @@ do
 
 	((i++))
 done
-
+cat $csv_file | grep -v Mbps| grep -v [0-9]bps | grep Gbps| sed "s/Gbps/-/"| sed "s/,/ /g"| sort -nr |sed "s/ /,/g" | sed "s/-/Gbps/" > ${csv_file}_sorted.csv
