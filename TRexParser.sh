@@ -6,7 +6,7 @@ MAX_csv_file=$csv_folder/0_Max.csv
 
 echo "" >> $MAX_csv_file
 echo "" >> $MAX_csv_file
-echo ",LogFileName,MaxRxThroughput,MaxTxThroughput,MaxPacketsPerSec,MaxConnectionsPerSec" > $MAX_csv_file
+echo ",MaxRxThroughput,MaxTxThroughput,MaxPacketsPerSec,MaxConnectionsPerSec,LogFileName" > $MAX_csv_file
 
 i=0
 while [ "x${log_files_list[$i]}" != "x" ]
@@ -95,7 +95,7 @@ do
 		TotalQueueFullArray=(`cat $log_filename | grep "Total_queue_full" | awk '{print $3 }'`)
 		CurrentTimeArray=(`cat $log_filename | grep "current time" | awk '{print $4 $5 }'`)
 
-		echo ",$test_name,$MaxRX,$MaxTX,$MaxPPS,$MaxCPS" >> $MAX_csv_file
+		echo ",$MaxRX,$MaxTX,$MaxPPS,$MaxCPS,$test_name" >> $MAX_csv_file
 
 		echo ",,$test_name" > $csv_file
 		echo ",,MaxRxThroughput,$MaxRX" >> $csv_file
@@ -119,4 +119,4 @@ do
 
 	((i++))
 done
-cat $MAX_csv_file | grep -v Mbps| grep -v [0-9]bps | grep Gbps| sed "s/Gbps/-/"| sed "s/,/ /g"| sort -nr |sed "s/ /,/g" | sed "s/-/Gbps/" > ${MAX_csv_file}_sorted.csv
+cat $MAX_csv_file | grep -v Mbps| grep -v [0-9]bps | grep Gbps| sed "s/Gbps/-/"| sed "s/,/ /g"| sort -nr |sed "s/ /,/g" | sed "s/-/Gbps/" > 0_Sorted${MAX_csv_file}
