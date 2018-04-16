@@ -1,4 +1,3 @@
-#log_filename=./imix_1518.yaml.log
 log_files_list=(`ls *.log`)
 csv_folder=CSV_files
 mkdir $csv_folder

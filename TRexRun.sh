@@ -28,17 +28,16 @@ do
 	done
 	pkill t-rex-64
 
-#	sleep 10
-#	if pgrep -x "t-rex-64" > /dev/null
-#	then
-#		echo "Running"
-#		sleep ${duration}
-#		pkill t-rex-64
-#	else
-#		echo "Stopped"
-#	fi
-
 	sleep 5
 
 	((count++))
 done
+echo "Tests are completed."
+echo "Parsing the logs now"
+echo "All the logs are kept here: "$LOGDIR
+echo "Parsed logs are available in .csv format here: "$LOGDIR/CSV_files
+echo "Max Throughputs of each test are available in: "$LOGDIR/CSV_files/0_Max_sorted.csv
+cd $LOGDIR
+wget https://raw.githubusercontent.com/SRIKKANTH/TRexPerf/master/TRexParser.sh
+bash TRexParser.sh
+echo "TRex testing is completed"
