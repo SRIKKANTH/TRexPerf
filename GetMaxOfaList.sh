@@ -19,10 +19,39 @@ MaxVal=""
 
 list=("P","T","G","M","K")
 i=0
-while [ "x${list[$i]}" != "x" -a "x${MaxVal}" == "x" ] 
+while [ "x${list[$i]}" != "x" -a "x${MaxVal}" == "x" ]
 do
 	echo $i
 	MaxVal=`printf '%s\n'  ${TotalRxArray[@]} | grep ${list[$i]} | sort -n| tail -1`
 	((i++))
 done
 echo "Max Value: $MaxVal"
+--
+
+time_elapsed=0
+duration=30
+while [ x`pgrep -x "t-rex-64"` != "x" ]
+do
+	sleep 10
+	time_elapsed=$((time_elapsed + 10))
+	echo $time_elapsed
+	#if [ $time_elapsed -gt ${duration} ]
+	#	then
+done
+echo time_elapsed
+
+
+] && [ $time_elapsed -gt ${duration} ]
+--
+if pgrep -x "t-rex-64" > /dev/null
+then
+	echo "Running"
+	sleep ${duration}
+	pkill t-rex-64
+else
+	echo "Stopped"
+fi
+
+sleep 5
+
+((count++))
