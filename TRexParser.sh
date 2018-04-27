@@ -119,4 +119,5 @@ do
 	((i++))
 done
 MAX_csv_file_sorted=$csv_folder/0_Max_sorted.csv
-cat $MAX_csv_file | grep -v Mbps| grep -v [0-9]bps | grep Gbps| sed "s/Gbps/-/"| sed "s/,/ /g"| sort -nr |sed "s/ /,/g" | sed "s/-/Gbps/" > ${MAX_csv_file_sorted}
+echo ",MaxRxThroughput,MaxTxThroughput,MaxPacketsPerSec,MaxConnectionsPerSec,TestName" > $MAX_csv_file_sorted
+cat $MAX_csv_file | grep -v Mbps| grep -v [0-9]bps | grep Gbps| sed "s/Gbps/-/"| sed "s/,/ /g"| sort -nr |sed "s/ /,/g" | sed "s/-/Gbps/" >> ${MAX_csv_file_sorted}
